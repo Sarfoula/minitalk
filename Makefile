@@ -1,34 +1,40 @@
-CLI = client
-SRV = server
-
 CC = gcc
-FLAG = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 
 OBJ_DIR = obj
 SRC_DIR = src
 
-OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
-SRC = $(wildcard $(SRC_DIR)/*.c)
+CLIENT = client
+SERVER = server
 
-$(NAME):
-	make $(SRV)
+CLIENT_OBJ = $(patsubst $(SRC_DIR)/client/%.c, $(OBJ_DIR)/client/%.o, $(wildcard $(SRC_DIR)/client/*.c))
+SERVER_OBJ = $(patsubst $(SRC_DIR)/server/%.c, $(OBJ_DIR)/server/%.o, $(wildcard $(SRC_DIR)/server/*.c))
 
-$(SRV): $(OBJ_DIR)
-	$(CC) $(OBJ) -o $(SRV)
+all: $(CLIENT) $(SERVER)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile | $(OBJ_DIR)
-	$(CC) $(FLAG) -c $< -o $@
+$(CLIENT): $(CLIENT_OBJ)
+	$(CC) $(FLAGS) $(CLIENT_OBJ) -o $(CLIENT)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(SERVER): $(SERVER_OBJ)
+	$(CC) $(FLAGS) $(SERVER_OBJ) -o $(SERVER)
 
-all: $(NAME)
+$(OBJ_DIR)/client/%.o: $(SRC_DIR)/client/%.c | $(OBJ_DIR)/client
+	$(CC) $(FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/server/%.o: $(SRC_DIR)/server/%.c | $(OBJ_DIR)/server
+	$(CC) $(FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/client:
+	mkdir -p $(OBJ_DIR)/client
+
+$(OBJ_DIR)/server:
+	mkdir -p $(OBJ_DIR)/server
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf $(SRV)
+	rm -f $(CLIENT) $(SERVER)
 
 re: fclean all
 
