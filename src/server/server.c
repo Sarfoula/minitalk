@@ -13,11 +13,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+#include "../../ft_printf/ft_printf.h"
 
 int binary = 0;
 int i = 0;
 
-void signal_handler(int signal)
+void signal_handler(int signal, siginfo_t *info, void *context)
 {
 	binary = binary << 1;
 	if (signal == 10)
@@ -28,16 +29,26 @@ void signal_handler(int signal)
 		write(1, &binary, 1);
 		i = 0;
 	}
+	printf("pid client == %d\n", info->si_pid);
+	(void)context;
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	int	pid;
+	struct sigaction test;
 
+	(void)argv;
+	if (argc != 1)
+		return (ft_printf("./server takes no argument\n"), 0);
 	pid = getpid();
-	printf("pid = %d\n", pid);
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	test.sa_sigaction = signal_handler;
+	sigemptyset(&test.sa_mask);
+	test.sa_flags = 0;
+
+	ft_printf("pid = %d\n", pid);
+	sigaction(SIGUSR1, &test, NULL);
+	sigaction(SIGUSR2, &test, NULL);
 	while (1) {
 	}
 	return (0);

@@ -3,20 +3,22 @@ FLAGS = -Wall -Wextra -Werror
 
 OBJ_DIR = obj
 SRC_DIR = src
+PRINTF_DIR = ft_printf
 
 CLIENT = client
 SERVER = server
+PRINTF = $(PRINTF_DIR)/libftprintf.a
 
 CLIENT_OBJ = $(patsubst $(SRC_DIR)/client/%.c, $(OBJ_DIR)/client/%.o, $(wildcard $(SRC_DIR)/client/*.c))
 SERVER_OBJ = $(patsubst $(SRC_DIR)/server/%.c, $(OBJ_DIR)/server/%.o, $(wildcard $(SRC_DIR)/server/*.c))
 
-all: $(CLIENT) $(SERVER)
+all: $(PRINTF) $(CLIENT) $(SERVER)
 
 $(CLIENT): $(CLIENT_OBJ)
-	$(CC) $(FLAGS) $(CLIENT_OBJ) -o $(CLIENT)
+	$(CC) $(FLAGS) $(CLIENT_OBJ) -L$(PRINTF_DIR) -lftprintf -o $(CLIENT)
 
 $(SERVER): $(SERVER_OBJ)
-	$(CC) $(FLAGS) $(SERVER_OBJ) -o $(SERVER)
+	$(CC) $(FLAGS) $(SERVER_OBJ) -L$(PRINTF_DIR) -lftprintf -o $(SERVER)
 
 $(OBJ_DIR)/client/%.o: $(SRC_DIR)/client/%.c | $(OBJ_DIR)/client
 	$(CC) $(FLAGS) -c $< -o $@
@@ -29,6 +31,9 @@ $(OBJ_DIR)/client:
 
 $(OBJ_DIR)/server:
 	mkdir -p $(OBJ_DIR)/server
+
+$(PRINTF):
+	make -C $(PRINTF_DIR)
 
 clean:
 	rm -rf $(OBJ_DIR)

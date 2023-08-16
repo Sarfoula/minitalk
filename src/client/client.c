@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+#include "../../ft_printf/ft_printf.h"
 
 int	ft_atoi(const char *str)
 {
@@ -54,10 +55,9 @@ int	send_bi(char symbol, int pid)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(20);
+		usleep(100);
 		i--;
 	}
-	pid += 1;
 	return (0);
 }
 
@@ -74,10 +74,17 @@ int send(char *text, int pid)
 	return (0);
 }
 
+void signal_handler()
+{
+	ft_printf("Your message has been received !!!\n");
+}
+
 int main(int argc, char **argv)
 {
 	if (argc != 3)
-		return (0);
+		return (ft_printf("Use:\n./client PID \"message\"\n"), 0);
 	send(argv[2], ft_atoi(argv[1]));
+	signal(SIGUSR1, signal_handler);
+	ft_printf("- %d -", getpid());
 	return (0);
 }
