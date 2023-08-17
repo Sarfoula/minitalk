@@ -86,5 +86,6 @@ int main(int argc, char **argv)
 		return (ft_printf("Use:\n./client PID \"message\"\n"), 0);
 	signal(SIGUSR1, signal_handler);
 	send(argv[2], ft_atoi(argv[1]));
+
 	return (0);
 }
