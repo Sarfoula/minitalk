@@ -71,6 +71,7 @@ int send(char *text, int pid)
 		send_bi(text[i], pid);
 		i++;
 	}
+	send_bi('\n', pid);
 	return (0);
 }
 
@@ -83,8 +84,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 3)
 		return (ft_printf("Use:\n./client PID \"message\"\n"), 0);
-	send(argv[2], ft_atoi(argv[1]));
 	signal(SIGUSR1, signal_handler);
-	ft_printf("- %d -", getpid());
+	send(argv[2], ft_atoi(argv[1]));
 	return (0);
 }
