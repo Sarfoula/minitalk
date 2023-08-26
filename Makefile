@@ -9,8 +9,8 @@ CLIENT = client
 SERVER = server
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-CLIENT_OBJ = $(patsubst $(SRC_DIR)/client/%.c, $(OBJ_DIR)/client/%.o, $(wildcard $(SRC_DIR)/client/*.c))
-SERVER_OBJ = $(patsubst $(SRC_DIR)/server/%.c, $(OBJ_DIR)/server/%.o, $(wildcard $(SRC_DIR)/server/*.c))
+CLIENT_OBJ = $(patsubst $(SRC_DIR)/client.c, $(OBJ_DIR)/client.o, $(wildcard $(SRC_DIR)/client.c))
+SERVER_OBJ = $(patsubst $(SRC_DIR)/server.c, $(OBJ_DIR)/server.o, $(wildcard $(SRC_DIR)/server.c))
 
 all: $(PRINTF) $(CLIENT) $(SERVER)
 
@@ -20,17 +20,14 @@ $(CLIENT): $(CLIENT_OBJ)
 $(SERVER): $(SERVER_OBJ)
 	$(CC) $(FLAGS) $(SERVER_OBJ) -L$(PRINTF_DIR) -lftprintf -o $(SERVER)
 
-$(OBJ_DIR)/client/%.o: $(SRC_DIR)/client/%.c | $(OBJ_DIR)/client
+$(OBJ_DIR)/client.o: $(SRC_DIR)/client.c | $(OBJ_DIR)
 	$(CC) $(FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/server/%.o: $(SRC_DIR)/server/%.c | $(OBJ_DIR)/server
+$(OBJ_DIR)/server.o: $(SRC_DIR)/server.c | $(OBJ_DIR)
 	$(CC) $(FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/client:
-	mkdir -p $(OBJ_DIR)/client
-
-$(OBJ_DIR)/server:
-	mkdir -p $(OBJ_DIR)/server
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 $(PRINTF):
 	make -C $(PRINTF_DIR)
