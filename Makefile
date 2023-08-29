@@ -9,8 +9,8 @@ CLIENT = client
 SERVER = server
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-CLIENT_OBJ = $(patsubst $(SRC_DIR)/client.c, $(OBJ_DIR)/client.o, $(wildcard $(SRC_DIR)/client.c))
-SERVER_OBJ = $(patsubst $(SRC_DIR)/server.c, $(OBJ_DIR)/server.o, $(wildcard $(SRC_DIR)/server.c))
+CLIENT_OBJ = $(patsubst $(SRC_DIR)/client.c, $(OBJ_DIR)/client.o, $(SRC_DIR)/client.c)
+SERVER_OBJ = $(patsubst $(SRC_DIR)/server.c, $(OBJ_DIR)/server.o, $(SRC_DIR)/server.c)
 
 all: $(PRINTF) $(CLIENT) $(SERVER)
 
