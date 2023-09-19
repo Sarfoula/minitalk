@@ -37,19 +37,19 @@ void signal_handler(int signal, siginfo_t *info, void *context)
 int main(int argc, char **argv)
 {
 	int	pid;
-	struct sigaction test;
+	struct sigaction sa;
 
 	(void)argv;
 	if (argc != 1)
 		return (ft_printf("Use: No argument\n./server\n"), 0);
 	pid = getpid();
-	test.sa_sigaction = signal_handler;
-	test.sa_flags = SA_SIGINFO;
-	sigemptyset(&test.sa_mask);
+	sa.sa_sigaction = signal_handler;
+	sa.sa_flags = SA_SIGINFO;
+	sigemptyset(&sa.sa_mask);
 
 	ft_printf("pid = %d\n", pid);
-	sigaction(SIGUSR1, &test, NULL);
-	sigaction(SIGUSR2, &test, NULL);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1) {
 	}
 	return (0);

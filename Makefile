@@ -37,6 +37,7 @@ clean:
 
 fclean: clean
 	rm -f $(CLIENT) $(SERVER)
+	make -C $(PRINTF_DIR) fclean
 
 re: fclean all
 

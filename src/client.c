@@ -55,7 +55,7 @@ int	send_bi(char symbol, int pid)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(500);
+		usleep(3900);
 		i--;
 	}
 	return (0);
@@ -63,7 +63,7 @@ int	send_bi(char symbol, int pid)
 
 int send(char *text, int pid)
 {
-	int	i;
+	int	i;	
 
 	i = 0;
 	while (text[i])
