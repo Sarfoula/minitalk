@@ -6,25 +6,20 @@
 /*   By: yallo <yallo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 09:38:03 by yallo             #+#    #+#             */
-/*   Updated: 2023/09/27 12:12:43 by yallo            ###   ########.fr       */
+/*   Updated: 2023/09/27 13:06:32 by yallo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "../ft_printf/ft_printf.h"
 
-int	g_index = -1;
+int	g_index = 0;
 
 void	signal_handler(int signal, siginfo_t *info, void *context)
 {
 	int		binary;
 	char	received;
 
-	if (g_index == -1)
-	{
-		kill(info->si_pid, SIGUSR2);
-		g_index = 0;
-	}
 	if (g_index == 0)
 		binary = 0;
 	binary = binary << 1;
@@ -36,6 +31,8 @@ void	signal_handler(int signal, siginfo_t *info, void *context)
 		g_index = 0;
 		received = (char)binary;
 		write(1, &received, 1);
+		if (received == '\n')
+			kill(info->si_pid, SIGUSR2);
 	}
 	kill(info->si_pid, SIGUSR1);
 	(void)context;

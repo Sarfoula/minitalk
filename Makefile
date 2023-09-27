@@ -14,16 +14,16 @@ SERVER_OBJ = $(patsubst $(SRC_DIR)/server.c, $(OBJ_DIR)/server.o, $(SRC_DIR)/ser
 
 all: $(PRINTF) $(CLIENT) $(SERVER)
 
-$(CLIENT): $(CLIENT_OBJ)
+$(CLIENT): $(CLIENT_OBJ) Makefile
 	$(CC) $(FLAGS) $(CLIENT_OBJ) -L$(PRINTF_DIR) -lftprintf -o $(CLIENT)
 
-$(SERVER): $(SERVER_OBJ)
+$(SERVER): $(SERVER_OBJ) Makefile
 	$(CC) $(FLAGS) $(SERVER_OBJ) -L$(PRINTF_DIR) -lftprintf -o $(SERVER)
 
-$(OBJ_DIR)/client.o: $(SRC_DIR)/client.c | $(OBJ_DIR)
+$(OBJ_DIR)/client.o: $(SRC_DIR)/client.c Makefile | $(OBJ_DIR)
 	$(CC) $(FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/server.o: $(SRC_DIR)/server.c | $(OBJ_DIR)
+$(OBJ_DIR)/server.o: $(SRC_DIR)/server.c Makefile | $(OBJ_DIR)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(OBJ_DIR):
