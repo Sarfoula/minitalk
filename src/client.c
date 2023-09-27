@@ -6,14 +6,14 @@
 /*   By: yallo <yallo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:40:33 by yallo             #+#    #+#             */
-/*   Updated: 2023/07/27 17:40:33 by yallo            ###   ########.fr       */
+/*   Updated: 2023/09/27 12:12:21 by yallo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
-#include "../../ft_printf/ft_printf.h"
+#include "../ft_printf/ft_printf.h"
 
-int received = 0;
+int	g_index = -1;
 
 int	ft_atoi(const char *str)
 {
@@ -46,22 +46,29 @@ int	ft_atoi(const char *str)
 
 int	send_bi(char symbol, int pid)
 {
-	int i;
+	int	i;
 
 	i = 7;
 	while (i >= 0)
 	{
+		while (1)
+		{
+			if (g_index == 1 || g_index == -1)
+			{
+				g_index = 0;
+				break ;
+			}
+		}
 		if (((symbol >> i) & 1) == 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(3900);
 		i--;
 	}
 	return (0);
 }
 
-int send(char *text, int pid)
+int	send(char *text, int pid)
 {
 	int	i;	
 
@@ -75,18 +82,17 @@ int send(char *text, int pid)
 	return (0);
 }
 
-void signal_handler()
+void	signal_handler(int signal)
 {
-	if (received == 0)
-	{
+	if (signal == SIGUSR1)
+		g_index = 1;
+	if (signal == SIGUSR2)
 		ft_printf("Your message has been received !!!\n");
-		received++;
-	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	int pid;
+	int	pid;
 
 	if (argc != 3)
 		return (ft_printf("Use:\n./client \"PID\" \"message\"\n"), 0);
@@ -94,7 +100,7 @@ int main(int argc, char **argv)
 	if (pid <= 0)
 		return (ft_printf("Wrong PID"), 0);
 	signal(SIGUSR1, signal_handler);
+	signal(SIGUSR2, signal_handler);
 	send(argv[2], pid);
-
 	return (0);
 }
