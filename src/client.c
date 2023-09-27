@@ -6,14 +6,14 @@
 /*   By: yallo <yallo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 17:40:33 by yallo             #+#    #+#             */
-/*   Updated: 2023/09/27 13:04:33 by yallo            ###   ########.fr       */
+/*   Updated: 2023/09/27 13:19:54 by yallo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include "../ft_printf/ft_printf.h"
 
-int	g_index = -1;
+int	g_index = 1;
 
 int	ft_atoi(const char *str)
 {
@@ -53,7 +53,7 @@ int	send_bi(char symbol, int pid)
 	{
 		while (1)
 		{
-			if (g_index == 1 || g_index == -1)
+			if (g_index == 1)
 			{
 				g_index = 0;
 				break ;
